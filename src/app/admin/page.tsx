@@ -64,7 +64,10 @@ import {
   exportResponsesAsCSV,
   exportResponsesAsJSON,
   exportResponsesAsExcel,
+  exportResponsesAsExcelXLSX,
 } from "@/lib/dummyResponses";
+import PrintableReport from "./PrintableReport";
+import ExportModal from "./ExportModal";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 // Modal Konfirmasi Berhasil dengan Animasi Centang.lottie (Loop 2x lalu Otomatis Tutup)
@@ -188,6 +191,8 @@ export default function AdminDashboardPage() {
   const [responseFilterSentiment, setResponseFilterSentiment] = useState<string>("all");
   const [responseSearchQuery, setResponseSearchQuery] = useState<string>("");
   const [isExportMenuOpen, setIsExportMenuOpen] = useState<boolean>(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
+  const [printScope, setPrintScope] = useState<"all" | "orangtua" | "anak">("all");
   const [selectedDetailResponse, setSelectedDetailResponse] = useState<SurveyResponseItem | null>(null);
   const [exportToastMessage, setExportToastMessage] = useState<string | null>(null);
 
@@ -789,19 +794,27 @@ export default function AdminDashboardPage() {
     currentPageSafe * RESPONSES_PER_PAGE
   );
 
-  const handleExport = (format: "csv" | "excel" | "json" | "print") => {
+  const handleExport = (
+    format: "csv" | "excel" | "json" | "print",
+    scope: "all" | "orangtua" | "anak" = "all"
+  ) => {
     setIsExportMenuOpen(false);
     if (format === "csv") {
-      exportResponsesAsCSV(filteredResponses);
+      exportResponsesAsCSV(responsesList, scope);
       showExportToast("Data berhasil diunduh dalam format CSV (.csv)!");
     } else if (format === "excel") {
-      exportResponsesAsExcel(filteredResponses);
-      showExportToast("Data berhasil diunduh dalam format Excel (.csv)!");
+      exportResponsesAsExcelXLSX(responsesList, scope);
+      showExportToast("Data berhasil diunduh dalam format Excel (.xlsx) resmi!");
     } else if (format === "json") {
-      exportResponsesAsJSON(filteredResponses);
+      exportResponsesAsJSON(responsesList, scope);
       showExportToast("Data berhasil diunduh dalam format JSON (.json)!");
     } else if (format === "print") {
-      window.print();
+      setPrintScope(scope);
+      setIsExportMenuOpen(false);
+      setIsExportModalOpen(false);
+      setTimeout(() => {
+        window.print();
+      }, 250);
     }
   };
 
@@ -853,11 +866,12 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div
-      className={`h-screen flex overflow-hidden selection:bg-purple-600 selection:text-white transition-colors duration-200 ${
-        isDark ? "bg-[#0A0A0E] text-[#F1F1F5]" : "bg-[#F8FAFC] text-neutral-900"
-      }`}
-    >
+    <>
+      <div
+        className={`print:hidden h-screen flex overflow-hidden selection:bg-purple-600 selection:text-white transition-colors duration-200 ${
+          isDark ? "bg-[#0A0A0E] text-[#F1F1F5]" : "bg-[#F8FAFC] text-neutral-900"
+        }`}
+      >
       {/* ============================================================== */}
       {/* SIDEBAR (Stationary on Desktop, hidden on mobile)              */}
       {/* ============================================================== */}
@@ -3017,15 +3031,21 @@ export default function AdminDashboardPage() {
                   <div className="relative">
                     <button
                       type="button"
-                      onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-sm whitespace-nowrap"
+                      onClick={() => setIsExportModalOpen(true)}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all shadow-sm whitespace-nowrap active:scale-95"
                     >
                       <Download className="w-4 h-4" />
-                      <span>Unduh Respon</span>
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isExportMenuOpen ? "rotate-180" : ""}`} />
+                      <span>Unduh &amp; Cetak Respon</span>
+                      <ChevronDown
+                        className="w-3.5 h-3.5 cursor-pointer hover:opacity-80"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsExportMenuOpen(!isExportMenuOpen);
+                        }}
+                      />
                     </button>
 
-                    {/* Dropdown Menu for Export Formats */}
+                    {/* Dropdown Menu for Quick Export Formats */}
                     {isExportMenuOpen && (
                       <>
                         <div
@@ -3033,7 +3053,7 @@ export default function AdminDashboardPage() {
                           onClick={() => setIsExportMenuOpen(false)}
                         />
                         <div
-                          className={`absolute right-0 mt-2 w-60 rounded-2xl border shadow-xl z-50 p-2 space-y-1 ${
+                          className={`absolute right-0 mt-2 w-64 rounded-2xl border shadow-xl z-50 p-2 space-y-1 ${
                             isDark
                               ? "bg-[#14121E] border-[#2A263D] text-white"
                               : "bg-white border-[#E2E8F0] text-neutral-900 shadow-purple-500/5"
@@ -3042,17 +3062,50 @@ export default function AdminDashboardPage() {
                           <div className={`px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider ${
                             isDark ? "text-neutral-400" : "text-neutral-500"
                           }`}>
-                            Pilih Format Unduhan
+                            Pilihan Cepat Unduhan
                           </div>
 
                           <button
                             type="button"
-                            onClick={() => handleExport("csv")}
+                            onClick={() => {
+                              setIsExportMenuOpen(false);
+                              setIsExportModalOpen(true);
+                            }}
+                            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
+                              isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
+                            }`}
+                          >
+                            <Download className="w-4 h-4 text-purple-500 shrink-0" />
+                            <div>
+                              <div className="font-bold">Pilih Kategori &amp; Format...</div>
+                              <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Orang Tua, Anak, atau Keduanya</div>
+                            </div>
+                          </button>
+
+                          <div className={`border-t my-1 ${isDark ? "border-[#232034]" : "border-neutral-100"}`} />
+
+                          <button
+                            type="button"
+                            onClick={() => handleExport("excel", "all")}
                             className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
                               isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
                             }`}
                           >
                             <FileSpreadsheet className="w-4 h-4 text-emerald-500 shrink-0" />
+                            <div>
+                              <div className="font-bold">Excel (.xlsx) - Semua Data</div>
+                              <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Multi-sheet Resmi Microsoft Excel</div>
+                            </div>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleExport("csv", "all")}
+                            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
+                              isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
+                            }`}
+                          >
+                            <FileSpreadsheet className="w-4 h-4 text-blue-500 shrink-0" />
                             <div>
                               <div className="font-bold">Format CSV (.csv)</div>
                               <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Universal Spreadsheet</div>
@@ -3061,26 +3114,12 @@ export default function AdminDashboardPage() {
 
                           <button
                             type="button"
-                            onClick={() => handleExport("excel")}
+                            onClick={() => handleExport("json", "all")}
                             className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
                               isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
                             }`}
                           >
-                            <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0" />
-                            <div>
-                              <div className="font-bold">Format Excel (.csv)</div>
-                              <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Optimasi Microsoft Excel</div>
-                            </div>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={() => handleExport("json")}
-                            className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
-                              isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
-                            }`}
-                          >
-                            <FileCode className="w-4 h-4 text-purple-500 shrink-0" />
+                            <FileCode className="w-4 h-4 text-amber-500 shrink-0" />
                             <div>
                               <div className="font-bold">Format JSON (.json)</div>
                               <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Struktur Data Raw</div>
@@ -3091,15 +3130,15 @@ export default function AdminDashboardPage() {
 
                           <button
                             type="button"
-                            onClick={() => handleExport("print")}
+                            onClick={() => handleExport("print", "all")}
                             className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-colors text-left ${
                               isDark ? "hover:bg-purple-950/40 hover:text-purple-300" : "hover:bg-purple-50 hover:text-purple-700"
                             }`}
                           >
-                            <Printer className="w-4 h-4 text-neutral-400 shrink-0" />
+                            <Printer className="w-4 h-4 text-purple-400 shrink-0" />
                             <div>
-                              <div className="font-bold">Cetak / Print Laporan</div>
-                              <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Dialog Cetak Browser</div>
+                              <div className="font-bold">Cetak Laporan Resmi GALAXY</div>
+                              <div className={`text-[10px] ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>Kop Dokumen Resmi Siap Cetak</div>
                             </div>
                           </button>
                         </div>
@@ -4300,5 +4339,25 @@ export default function AdminDashboardPage() {
         isDark={isDark}
       />
     </div>
+
+    {/* Dokumen Laporan Khusus Cetak / Print Resmi (Kop Surat Resmi GALAXY) */}
+    <PrintableReport
+      responses={responsesList}
+      scope={printScope}
+      adminName={adminUser?.name || "Administrator"}
+    />
+
+    {/* Modal Unduh & Cetak Laporan (Pilihan Sumber Data & Format Lengkap) */}
+    <ExportModal
+      isOpen={isExportModalOpen}
+      onClose={() => setIsExportModalOpen(false)}
+      responsesList={responsesList}
+      onExportExcel={(scope) => handleExport("excel", scope)}
+      onExportCSV={(scope) => handleExport("csv", scope)}
+      onExportJSON={(scope) => handleExport("json", scope)}
+      onPrint={(scope) => handleExport("print", scope)}
+      isDark={isDark}
+    />
+  </>
   );
 }

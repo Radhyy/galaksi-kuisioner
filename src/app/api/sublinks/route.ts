@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { defaultSublinks, SurveySublink } from "@/lib/surveyStore";
 
+export const dynamic = "force-dynamic";
+
 // Ensure survey_sublinks table exists and is seeded with defaults
 async function ensureSublinksTable() {
   await sql`
@@ -39,6 +41,18 @@ async function ensureSublinksTable() {
           ${JSON.stringify(sub.questions)}::jsonb
         )
         ON CONFLICT (slug) DO NOTHING;
+      `;
+    }
+  } else {
+    // Sync default sublinks questions with official versions
+    for (const sub of defaultSublinks) {
+      await sql`
+        UPDATE survey_sublinks
+        SET questions = ${JSON.stringify(sub.questions)}::jsonb,
+            title = ${sub.title},
+            target_audience = ${sub.targetAudience},
+            description = ${sub.description}
+        WHERE LOWER(slug) = LOWER(${sub.slug}) OR (LOWER(${sub.slug}) = 'anak' AND LOWER(slug) = 'siswa');
       `;
     }
   }

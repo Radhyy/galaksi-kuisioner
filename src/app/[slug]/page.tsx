@@ -74,6 +74,7 @@ function SurveyContent() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [viewMode, setViewMode] = useState<"stepper" | "all">("stepper");
+  const [respondentName, setRespondentName] = useState<string>("");
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -393,8 +394,16 @@ function SurveyContent() {
     setErrorMessage(null);
   };
 
+  const hasNameQuestion = questions.some(
+    (q) => q.title.toLowerCase().includes("nama") || q.id.includes("nama")
+  );
+
   const validateAll = (): boolean => {
     if (!sublink) return true;
+    if (!hasNameQuestion && !respondentName.trim()) {
+      setErrorMessage("Nama Lengkap Responden wajib diisi sebelum mengirim kuisioner.");
+      return false;
+    }
     for (let i = 0; i < sublink.questions.length; i++) {
       const q = sublink.questions[i];
       if (q.required) {
@@ -414,6 +423,10 @@ function SurveyContent() {
   };
 
   const handleNextStep = () => {
+    if (!hasNameQuestion && currentStep === 0 && !respondentName.trim()) {
+      setErrorMessage("Mohon lengkapi Nama Responden terlebih dahulu.");
+      return;
+    }
     if (currentQ && currentQ.required) {
       const ans = answers[currentQ.id];
       const empty =
@@ -443,9 +456,13 @@ function SurveyContent() {
 
     try {
       // Extract respondent name
-      let respName = "Anonim";
+      let respName = respondentName.trim() || "Anonim";
       let rating = 5.0;
       let sentiment: "Sangat Puas" | "Puas" | "Cukup" | "Kurang" = "Sangat Puas";
+
+      // Hitung skor rating dari 12 pilihan ganda A, B, C, D
+      let scoreSum = 0;
+      let scoreCount = 0;
 
       const formattedAnswers = questions.map((q) => {
         const rawVal = answers[q.id];
@@ -464,12 +481,13 @@ function SurveyContent() {
           }
         }
 
-        if (q.type === "nps" && typeof rawVal === "number") {
-          rating = Math.round((rawVal / 2) * 10) / 10;
-          if (rawVal >= 9) sentiment = "Sangat Puas";
-          else if (rawVal >= 7) sentiment = "Puas";
-          else if (rawVal >= 5) sentiment = "Cukup";
-          else sentiment = "Kurang";
+        if (q.type === "single-choice" && ansStr && ansStr !== "-") {
+          scoreCount++;
+          if (ansStr.startsWith("A.") || ansStr.startsWith("A ")) scoreSum += 5.0;
+          else if (ansStr.startsWith("B.") || ansStr.startsWith("B ")) scoreSum += 4.0;
+          else if (ansStr.startsWith("C.") || ansStr.startsWith("C ")) scoreSum += 2.5;
+          else if (ansStr.startsWith("D.") || ansStr.startsWith("D ")) scoreSum += 1.5;
+          else scoreSum += 4.0;
         }
 
         return {
@@ -477,6 +495,14 @@ function SurveyContent() {
           answer: ansStr,
         };
       });
+
+      if (scoreCount > 0) {
+        rating = Math.round((scoreSum / scoreCount) * 10) / 10;
+        if (rating >= 4.2) sentiment = "Sangat Puas";
+        else if (rating >= 3.4) sentiment = "Puas";
+        else if (rating >= 2.4) sentiment = "Cukup";
+        else sentiment = "Kurang";
+      }
 
       // Save to database via API
       await fetch("/api/responses", {
@@ -708,6 +734,52 @@ function SurveyContent() {
               </div>
             </div>
 
+            {/* Kartu Identitas Responden (Jika belum ada pertanyaan khusus nama) */}
+            {!hasNameQuestion && (
+              <div
+                className={`mb-6 p-5 sm:p-6 rounded-2xl border transition-all ${
+                  isDark
+                    ? "bg-[#111019] border-[#232034]"
+                    : "bg-white border-neutral-200/90 shadow-2xs"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <label
+                    htmlFor="respondent-name-input"
+                    className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 flex items-center gap-1.5"
+                  >
+                    <span>Nama Responden</span>
+                    <span className="text-rose-500">*</span>
+                  </label>
+                  <span className="text-[11px] text-neutral-400 font-medium">
+                    Wajib diisi
+                  </span>
+                </div>
+                <input
+                  id="respondent-name-input"
+                  type="text"
+                  value={respondentName}
+                  onChange={(e) => {
+                    setRespondentName(e.target.value);
+                    setErrorMessage(null);
+                  }}
+                  placeholder={
+                    sublink.slug === "orangtua"
+                      ? "Tuliskan nama lengkap atau panggilan Anda (contoh: Ibu Siti Rahmawati / Bapak Budi)"
+                      : "Tuliskan nama lengkap atau panggilanmu (contoh: Dimas Aditya / Salsa / Nabila)"
+                  }
+                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-purple-500/20 ${
+                    isDark
+                      ? "bg-[#161422] border-[#252136] text-white placeholder-neutral-500 focus:border-purple-500"
+                      : "bg-neutral-50/70 border-neutral-300 text-neutral-900 placeholder-neutral-400 focus:border-purple-600"
+                  }`}
+                />
+                <p className="mt-2 text-[11px] text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                  Identitas Anda digunakan untuk rekapitulasi evaluasi program GALAXY dan dijamin kerahasiaannya.
+                </p>
+              </div>
+            )}
+
             {/* Stepper View vs All Questions View */}
             {viewMode === "stepper" ? (
               <div className="space-y-8">
@@ -723,7 +795,7 @@ function SurveyContent() {
                         isDark ? "text-purple-400" : "text-purple-600"
                       }`}
                     >
-                      Pertanyaan 0{currentStep + 1}
+                      Pertanyaan {String(currentStep + 1).padStart(2, "0")}
                     </span>
                     <span
                       className={isDark ? "text-neutral-600" : "text-neutral-300"}
@@ -731,7 +803,7 @@ function SurveyContent() {
                       /
                     </span>
                     <span className="text-xs font-medium text-neutral-400">
-                      0{totalQuestions}
+                      {String(totalQuestions).padStart(2, "0")}
                     </span>
                   </div>
 
@@ -848,7 +920,7 @@ function SurveyContent() {
                         isDark ? "text-purple-400" : "text-purple-600"
                       }`}
                     >
-                      Pertanyaan 0{idx + 1}
+                      Pertanyaan {String(idx + 1).padStart(2, "0")}
                     </div>
 
                     <RenderQuestionBlock
@@ -1106,6 +1178,10 @@ function RenderQuestionBlock({
       {question.type === "single-choice" && question.options && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
           {question.options.map((opt) => {
+            const letterMatch = opt.title.match(/^([A-D])\.\s*(.*)$/);
+            const letterBadge = letterMatch ? letterMatch[1] : null;
+            const mainText = letterMatch ? letterMatch[2] : opt.title;
+
             const IconComponent =
               opt.iconName && iconMap[opt.iconName]
                 ? iconMap[opt.iconName]
@@ -1127,21 +1203,36 @@ function RenderQuestionBlock({
                     : "border-neutral-200 bg-white hover:border-purple-300 hover:bg-neutral-50/70 text-neutral-800 shadow-2xs"
                 }`}
               >
-                <div className="flex items-start justify-between w-full mb-3.5">
-                  <div
-                    className={`w-11 h-11 rounded-xl flex items-center justify-center transition-colors ${
-                      isSelected
-                        ? "bg-purple-600 text-white"
-                        : isDark
-                        ? "bg-[#181624] text-neutral-400 group-hover:text-purple-300"
-                        : "bg-neutral-100 text-neutral-700 group-hover:bg-neutral-200/80"
-                    }`}
-                  >
-                    <IconComponent className="w-5 h-5 stroke-[2]" />
-                  </div>
+                <div className="flex items-start justify-between w-full mb-3">
+                  {letterBadge ? (
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm transition-colors ${
+                        isSelected
+                          ? "bg-purple-600 text-white shadow-xs"
+                          : isDark
+                          ? "bg-[#181624] text-purple-300 group-hover:bg-purple-950"
+                          : "bg-purple-100 text-purple-800 group-hover:bg-purple-200"
+                      }`}
+                    >
+                      {letterBadge}
+                    </div>
+                  ) : (
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
+                        isSelected
+                          ? "bg-purple-600 text-white"
+                          : isDark
+                          ? "bg-[#181624] text-neutral-400 group-hover:text-purple-300"
+                          : "bg-neutral-100 text-neutral-700 group-hover:bg-neutral-200/80"
+                      }`}
+                    >
+                      <IconComponent className="w-4 h-4 stroke-[2]" />
+                    </div>
+                  )}
+
                   {/* Large Clear Radio Indicator */}
                   <div
-                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                    className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
                       isSelected
                         ? "border-purple-600 bg-purple-600 shadow-xs"
                         : isDark
@@ -1150,24 +1241,24 @@ function RenderQuestionBlock({
                     }`}
                   >
                     {isSelected && (
-                      <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                      <div className="w-2 h-2 rounded-full bg-white" />
                     )}
                   </div>
                 </div>
 
                 <div>
                   <div
-                    className={`text-base sm:text-lg font-bold tracking-tight mb-1 ${
+                    className={`text-sm sm:text-base font-bold tracking-tight leading-snug ${
                       isSelected
                         ? isDark
                           ? "text-white font-extrabold"
                           : "text-purple-950 font-extrabold"
                         : isDark
-                        ? "text-white"
+                        ? "text-neutral-100"
                         : "text-neutral-900"
                     }`}
                   >
-                    {opt.title}
+                    {mainText}
                   </div>
                   {opt.desc && (
                     <div

@@ -27,7 +27,7 @@ export interface QuestionItem {
 
 export interface SurveySublink {
   id: string;
-  slug: string; // e.g. "orangtua", "siswa"
+  slug: string; // e.g. "orangtua", "anak"
   title: string;
   targetAudience: string;
   description: string;
@@ -37,6 +37,610 @@ export interface SurveySublink {
   lastUpdated: string;
   questions: QuestionItem[];
 }
+
+// ==============================================================
+// SOAL RESMI LINK ORANG TUA (13 Pertanyaan)
+// ==============================================================
+export const orangTuaQuestions: QuestionItem[] = [
+  {
+    id: "q-ot-1",
+    title: "Ketika anak terlihat murung, lebih pendiam, atau menunjukkan perubahan perilaku, apa yang biasanya Anda lakukan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-1-a",
+        title: "A. Menghampiri dan menanyakan apa yang sedang dirasakan anak dengan penuh perhatian.",
+      },
+      {
+        id: "ot-1-b",
+        title: "B. Menunggu sampai anak bersedia menceritakan masalahnya sendiri.",
+      },
+      {
+        id: "ot-1-c",
+        title: "C. Menganggap perubahan tersebut sebagai hal biasa dalam masa remaja.",
+      },
+      {
+        id: "ot-1-d",
+        title: "D. Menegur anak karena dianggap terlalu banyak berpikir atau bersikap berlebihan.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-2",
+    title: "Seberapa jauh Anda mengetahui hal-hal yang sedang menjadi perhatian utama anak saat ini, seperti pertemanan, pendidikan, cita-cita, dan permasalahan pribadinya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-2-a",
+        title: "A. Mengetahui hampir seluruh perkembangan dan permasalahan yang dialami anak.",
+      },
+      {
+        id: "ot-2-b",
+        title: "B. Mengetahui sebagian besar aktivitas dan permasalahan anak.",
+      },
+      {
+        id: "ot-2-c",
+        title: "C. Hanya mengetahui hal-hal umum mengenai kehidupan anak.",
+      },
+      {
+        id: "ot-2-d",
+        title: "D. Jarang mengetahui apa yang sedang terjadi dalam kehidupan anak.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-3",
+    title: "Ketika anak menceritakan sebuah masalah, bagaimana respons pertama yang biasanya Anda berikan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-3-a",
+        title: "A. Mendengarkan sampai selesai, memahami perasaannya, kemudian memberikan tanggapan.",
+      },
+      {
+        id: "ot-3-b",
+        title: "B. Mendengarkan sambil memberikan nasihat agar anak segera menemukan solusi.",
+      },
+      {
+        id: "ot-3-c",
+        title: "C. Langsung memberikan solusi tanpa menggali perasaan dan penyebab masalahnya.",
+      },
+      {
+        id: "ot-3-d",
+        title: "D. Memarahi atau menyalahkan anak karena dianggap tidak mampu menyelesaikan masalah sendiri.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-4",
+    title: "Dalam kehidupan sehari-hari, bagaimana Anda membangun komunikasi dengan anak di tengah kesibukan pekerjaan dan tanggung jawab lainnya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-4-a",
+        title: "A. Menyediakan waktu khusus setiap hari untuk berbicara dan mendengarkan cerita anak.",
+      },
+      {
+        id: "ot-4-b",
+        title: "B. Berkomunikasi ketika memiliki waktu luang atau saat berkumpul bersama keluarga.",
+      },
+      {
+        id: "ot-4-c",
+        title: "C. Lebih sering berkomunikasi mengenai kebutuhan sekolah, pekerjaan rumah, dan tanggung jawab anak.",
+      },
+      {
+        id: "ot-4-d",
+        title: "D. Jarang melakukan komunikasi mendalam karena kesibukan masing-masing.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-5",
+    title: "Ketika anak melakukan kesalahan atau mendapatkan hasil yang tidak sesuai harapan, bagaimana Anda menyikapinya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-5-a",
+        title: "A. Mengajak anak mengevaluasi kesalahan dan mencari solusi bersama tanpa merendahkan dirinya.",
+      },
+      {
+        id: "ot-5-b",
+        title: "B. Memberikan nasihat dan mengingatkan anak agar tidak mengulangi kesalahan.",
+      },
+      {
+        id: "ot-5-c",
+        title: "C. Menunjukkan kekecewaan agar anak menyadari kesalahannya.",
+      },
+      {
+        id: "ot-5-d",
+        title: "D. Membandingkan anak dengan orang lain agar termotivasi menjadi lebih baik.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-6",
+    title: "Sejauh mana Anda memahami bentuk kasih sayang dan perhatian yang paling dibutuhkan anak?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-6-a",
+        title: "A. Mengetahui dan berusaha memenuhi kebutuhan emosional anak melalui perhatian, waktu, dukungan, dan komunikasi.",
+      },
+      {
+        id: "ot-6-b",
+        title: "B. Berusaha menunjukkan kasih sayang melalui perhatian dan pemenuhan kebutuhan sehari-hari.",
+      },
+      {
+        id: "ot-6-c",
+        title: "C. Menganggap pemenuhan kebutuhan materi dan pendidikan sudah cukup menunjukkan kasih sayang.",
+      },
+      {
+        id: "ot-6-d",
+        title: "D. Jarang memikirkan bagaimana anak ingin diperhatikan dan disayangi.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-7",
+    title: "Ketika anak memiliki pendapat yang berbeda dengan Anda, bagaimana sikap yang biasanya ditunjukkan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-7-a",
+        title: "A. Memberikan kesempatan anak menjelaskan pendapatnya dan mempertimbangkannya secara terbuka.",
+      },
+      {
+        id: "ot-7-b",
+        title: "B. Mendengarkan pendapat anak, tetapi keputusan akhir tetap ditentukan oleh orang tua.",
+      },
+      {
+        id: "ot-7-c",
+        title: "C. Meminta anak mengikuti keputusan orang tua karena dianggap lebih berpengalaman.",
+      },
+      {
+        id: "ot-7-d",
+        title: "D. Menganggap perbedaan pendapat sebagai bentuk pembangkangan anak.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-8",
+    title: "Seberapa jauh Anda memberikan kepercayaan kepada anak untuk menentukan pilihan dan mengembangkan potensi dirinya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-8-a",
+        title: "A. Memberikan kebebasan yang bertanggung jawab serta mendampingi anak dalam mengambil keputusan.",
+      },
+      {
+        id: "ot-8-b",
+        title: "B. Memberikan kebebasan selama pilihan anak masih sesuai dengan harapan orang tua.",
+      },
+      {
+        id: "ot-8-c",
+        title: "C. Membatasi sebagian besar keputusan anak karena khawatir anak melakukan kesalahan.",
+      },
+      {
+        id: "ot-8-d",
+        title: "D. Lebih sering menentukan pilihan anak tanpa melibatkan pendapatnya.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-9",
+    title: "Ketika anak menghadapi permasalahan dalam pertemanan atau lingkungan sosialnya, bagaimana Anda memberikan dukungan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-9-a",
+        title: "A. Mengajak anak bercerita, memahami situasi, dan membantu mencari jalan keluar bersama.",
+      },
+      {
+        id: "ot-9-b",
+        title: "B. Memberikan nasihat berdasarkan pengalaman pribadi.",
+      },
+      {
+        id: "ot-9-c",
+        title: "C. Meminta anak menyelesaikan masalahnya sendiri agar lebih mandiri.",
+      },
+      {
+        id: "ot-9-d",
+        title: "D. Menganggap masalah pertemanan bukan sesuatu yang perlu terlalu diperhatikan.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-10",
+    title: "Pernahkah Anda menyadari bahwa perkataan atau tindakan Anda mungkin membuat anak merasa takut, kurang dihargai, atau enggan bercerita? Bagaimana Anda menyikapinya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-10-a",
+        title: "A. Melakukan introspeksi, meminta maaf jika diperlukan, dan memperbaiki cara berkomunikasi.",
+      },
+      {
+        id: "ot-10-b",
+        title: "B. Menyadari kemungkinan tersebut, tetapi masih kesulitan mengubah kebiasaan.",
+      },
+      {
+        id: "ot-10-c",
+        title: "C. Menganggap anak perlu memahami bahwa orang tua terkadang bersikap tegas.",
+      },
+      {
+        id: "ot-10-d",
+        title: "D. Menganggap perasaan tersebut sebagai akibat anak yang terlalu sensitif.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-11",
+    title: "Ketika membayangkan masa depan anak, bagaimana Anda menyeimbangkan harapan pribadi dengan keinginan dan potensi yang dimiliki anak?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-11-a",
+        title: "A. Mendukung cita-cita anak dan membimbingnya sesuai kemampuan serta minatnya.",
+      },
+      {
+        id: "ot-11-b",
+        title: "B. Memberikan kebebasan selama pilihan anak masih mempertimbangkan masa depannya.",
+      },
+      {
+        id: "ot-11-c",
+        title: "C. Mengarahkan anak mengikuti cita-cita yang menurut orang tua paling menjamin keberhasilan.",
+      },
+      {
+        id: "ot-11-d",
+        title: "D. Mengharapkan anak mengikuti seluruh rencana dan keinginan orang tua.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-12",
+    title: "Jika diberikan kesempatan untuk memperbaiki satu hal dalam hubungan dengan anak, tindakan apa yang paling ingin Anda lakukan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ot-12-a",
+        title: "A. Membangun komunikasi yang lebih terbuka, menyediakan waktu, dan lebih memahami perasaan anak.",
+      },
+      {
+        id: "ot-12-b",
+        title: "B. Lebih sering memberikan perhatian dan menghabiskan waktu bersama anak.",
+      },
+      {
+        id: "ot-12-c",
+        title: "C. Memperbaiki kedisiplinan dan kepatuhan anak terhadap orang tua.",
+      },
+      {
+        id: "ot-12-d",
+        title: "D. Mempertahankan pola pengasuhan yang selama ini sudah diterapkan.",
+      },
+    ],
+  },
+  {
+    id: "q-ot-13",
+    title: "Pesan dari Hati Orang Tua",
+    subtitle: "Jika Anda diberikan kesempatan untuk berbicara dari hati ke hati kepada anak tanpa batasan, tuntutan, maupun interupsi, apa yang ingin Anda sampaikan? Apa bentuk kasih sayang, permintaan maaf, nasihat, atau harapan yang selama ini mungkin belum sempat Anda ungkapkan?",
+    type: "text",
+    required: true,
+    placeholder: "Tuliskan isi hati, permintaan maaf, kasih sayang, dan harapan tulus Anda untuk anak di sini...",
+  },
+];
+
+// ==============================================================
+// SOAL RESMI LINK ANAK (13 Pertanyaan)
+// ==============================================================
+export const anakQuestions: QuestionItem[] = [
+  {
+    id: "q-ak-1",
+    title: "Ketika kamu sedang merasa sedih, kecewa, atau menghadapi masalah, bagaimana biasanya kamu menyikapinya di hadapan orang tua?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-1-a",
+        title: "A. Langsung bercerita karena merasa orang tua adalah tempat paling aman untuk mengungkapkan perasaan.",
+      },
+      {
+        id: "ak-1-b",
+        title: "B. Bercerita jika orang tua terlebih dahulu menanyakan keadaanmu.",
+      },
+      {
+        id: "ak-1-c",
+        title: "C. Memilih diam karena merasa orang tua belum tentu memahami permasalahanmu.",
+      },
+      {
+        id: "ak-1-d",
+        title: "D. Menyimpan semuanya sendiri karena takut dimarahi, disalahkan, atau dianggap berlebihan.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-2",
+    title: "Seberapa nyaman kamu menceritakan pengalaman sehari-hari, pertemanan, cita-cita, dan permasalahan pribadi kepada orang tua?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-2-a",
+        title: "A. Sangat nyaman karena orang tua selalu memberikan ruang untuk bercerita.",
+      },
+      {
+        id: "ak-2-b",
+        title: "B. Cukup nyaman, tetapi ada beberapa hal yang masih sulit untuk disampaikan.",
+      },
+      {
+        id: "ak-2-c",
+        title: "C. Kurang nyaman karena sering merasa tidak mendapatkan respons yang diharapkan.",
+      },
+      {
+        id: "ak-2-d",
+        title: "D. Tidak nyaman karena merasa tidak memiliki kebebasan untuk bercerita secara terbuka.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-3",
+    title: "Ketika kamu menyampaikan pendapat yang berbeda dengan orang tua, bagaimana respons yang biasanya kamu terima?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-3-a",
+        title: "A. Orang tua mendengarkan dan mempertimbangkan pendapatku meskipun berbeda.",
+      },
+      {
+        id: "ak-3-b",
+        title: "B. Orang tua mendengarkan, tetapi keputusan akhir biasanya tetap ditentukan mereka.",
+      },
+      {
+        id: "ak-3-c",
+        title: "C. Orang tua sering menolak pendapatku tanpa memberikan kesempatan menjelaskan.",
+      },
+      {
+        id: "ak-3-d",
+        title: "D. Aku memilih tidak menyampaikan pendapat karena takut menimbulkan konflik.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-4",
+    title: "Ketika kamu mengalami kegagalan, mendapatkan nilai buruk, atau melakukan kesalahan, bagaimana sikap orang tua terhadapmu?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-4-a",
+        title: "A. Memberikan dukungan, mendengarkan penjelasanku, dan membantuku memperbaiki kesalahan.",
+      },
+      {
+        id: "ak-4-b",
+        title: "B. Memberikan nasihat agar aku lebih berhati-hati dan bertanggung jawab.",
+      },
+      {
+        id: "ak-4-c",
+        title: "C. Menunjukkan kekecewaan sehingga membuatku merasa tertekan.",
+      },
+      {
+        id: "ak-4-d",
+        title: "D. Membandingkanku dengan orang lain atau menyalahkanku atas kegagalan tersebut.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-5",
+    title: "Seberapa jauh kamu merasa orang tua mengenal dirimu, termasuk kepribadian, hal yang kamu sukai, ketakutan, cita-cita, dan sesuatu yang membuatmu bahagia?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-5-a",
+        title: "A. Sangat mengenal karena orang tua sering memperhatikan dan memahami kehidupanku.",
+      },
+      {
+        id: "ak-5-b",
+        title: "B. Cukup mengenal, tetapi masih ada beberapa hal yang belum mereka ketahui.",
+      },
+      {
+        id: "ak-5-c",
+        title: "C. Kurang mengenal karena jarang membicarakan hal-hal pribadi denganku.",
+      },
+      {
+        id: "ak-5-d",
+        title: "D. Tidak terlalu mengenal karena hubungan kami lebih banyak membahas kewajiban dan kebutuhan sehari-hari.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-6",
+    title: "Bagaimana kamu menggambarkan waktu kebersamaanmu dengan orang tua selama ini?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-6-a",
+        title: "A. Sering menghabiskan waktu bersama dan melakukan komunikasi yang bermakna.",
+      },
+      {
+        id: "ak-6-b",
+        title: "B. Memiliki waktu bersama, tetapi biasanya hanya pada kesempatan tertentu.",
+      },
+      {
+        id: "ak-6-c",
+        title: "C. Jarang menghabiskan waktu bersama karena kesibukan masing-masing.",
+      },
+      {
+        id: "ak-6-d",
+        title: "D. Hampir tidak pernah memiliki waktu khusus untuk berbicara dari hati ke hati.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-7",
+    title: "Ketika kamu sedang mengalami tekanan, kecemasan, atau permasalahan dalam pertemanan, apakah kamu merasa orang tua dapat menjadi tempat untuk mencari dukungan emosional?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-7-a",
+        title: "A. Sangat merasa aman karena orang tua selalu berusaha memahami perasaanku.",
+      },
+      {
+        id: "ak-7-b",
+        title: "B. Cukup merasa aman, meskipun terkadang masih sulit mengungkapkan semuanya.",
+      },
+      {
+        id: "ak-7-c",
+        title: "C. Kurang merasa aman karena khawatir akan mendapatkan penilaian negatif.",
+      },
+      {
+        id: "ak-7-d",
+        title: "D. Tidak merasa aman karena lebih memilih mencari dukungan dari orang lain.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-8",
+    title: "Sejauh mana orang tua memberikan kepercayaan dan kebebasan kepadamu dalam menentukan pilihan hidup, mengembangkan minat, serta membangun identitas diri?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-8-a",
+        title: "A. Memberikan kepercayaan dan kebebasan dengan tetap memberikan arahan.",
+      },
+      {
+        id: "ak-8-b",
+        title: "B. Memberikan kebebasan selama pilihanku sesuai dengan harapan mereka.",
+      },
+      {
+        id: "ak-8-c",
+        title: "C. Sering membatasi pilihanku meskipun aku sudah mempertimbangkannya.",
+      },
+      {
+        id: "ak-8-d",
+        title: "D. Hampir seluruh keputusan penting dalam hidupku ditentukan oleh orang tua.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-9",
+    title: "Ketika terjadi pertengkaran atau perbedaan pendapat dengan orang tua, bagaimana biasanya hubungan kalian setelahnya?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-9-a",
+        title: "A. Kami berusaha saling memahami, meminta maaf, dan menyelesaikan masalah bersama.",
+      },
+      {
+        id: "ak-9-b",
+        title: "B. Biasanya kembali membaik setelah beberapa waktu meskipun tidak selalu membicarakan masalahnya.",
+      },
+      {
+        id: "ak-9-c",
+        title: "C. Masalah sering dibiarkan tanpa penyelesaian yang jelas.",
+      },
+      {
+        id: "ak-9-d",
+        title: "D. Aku cenderung menghindar dan menjaga jarak karena merasa tidak dipahami.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-10",
+    title: "Apakah kamu merasa mendapatkan kasih sayang dan perhatian yang cukup dari orang tua, bukan hanya melalui pemenuhan kebutuhan materi, tetapi juga melalui perhatian emosional?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-10-a",
+        title: "A. Sangat merasa disayangi melalui perhatian, dukungan, waktu, dan komunikasi.",
+      },
+      {
+        id: "ak-10-b",
+        title: "B. Merasa disayangi, tetapi terkadang masih membutuhkan perhatian lebih.",
+      },
+      {
+        id: "ak-10-c",
+        title: "C. Kurang merasakan perhatian emosional karena orang tua lebih fokus pada kebutuhan sehari-hari.",
+      },
+      {
+        id: "ak-10-d",
+        title: "D. Sering merasa kesepian meskipun berada di tengah keluarga.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-11",
+    title: "Jika kamu memiliki masalah atau sesuatu yang ingin disampaikan, tetapi belum berani mengungkapkannya kepada orang tua, apa alasan terbesarmu?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-11-a",
+        title: "A. Sebenarnya tidak ada hambatan karena aku merasa bebas bercerita.",
+      },
+      {
+        id: "ak-11-b",
+        title: "B. Takut membuat orang tua khawatir atau kecewa.",
+      },
+      {
+        id: "ak-11-c",
+        title: "C. Takut disalahpahami, dihakimi, atau mendapatkan respons yang tidak menyenangkan.",
+      },
+      {
+        id: "ak-11-d",
+        title: "D. Merasa orang tua tidak akan memahami apa yang sedang aku alami.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-12",
+    title: "Jika diberikan kesempatan untuk memperbaiki satu hal dalam hubunganmu dengan orang tua, perubahan apa yang paling kamu harapkan?",
+    type: "single-choice",
+    required: true,
+    options: [
+      {
+        id: "ak-12-a",
+        title: "A. Membangun komunikasi yang lebih terbuka dan saling mendengarkan.",
+      },
+      {
+        id: "ak-12-b",
+        title: "B. Memiliki lebih banyak waktu berkualitas bersama keluarga.",
+      },
+      {
+        id: "ak-12-c",
+        title: "C. Mendapatkan lebih banyak kepercayaan, pengertian, dan kebebasan.",
+      },
+      {
+        id: "ak-12-d",
+        title: "D. Ingin lebih dihargai perasaannya dan tidak mudah dihakimi ketika bercerita.",
+      },
+    ],
+  },
+  {
+    id: "q-ak-13",
+    title: "Pesan dari Hati Anak",
+    subtitle: "Bayangkan saat ini kamu memiliki kesempatan berbicara secara terbuka kepada ayah dan ibu tanpa interupsi, kemarahan, maupun penghakiman. Apa yang ingin kamu sampaikan kepada mereka mengenai perasaan, kebutuhan, harapan, dan keinginanmu untuk memiliki hubungan keluarga yang lebih dekat?",
+    type: "text",
+    required: true,
+    placeholder: "Tuliskan isi hatimu, perasaanmu, dan harapanmu untuk ayah dan ibu di sini...",
+  },
+];
 
 export const defaultSublinks: SurveySublink[] = [
   {
@@ -50,295 +654,36 @@ export const defaultSublinks: SurveySublink[] = [
     estimatedMinutes: 3,
     totalResponses: 0,
     lastUpdated: "Hari ini",
-    questions: [
-      {
-        id: "q-ot-nama",
-        title: "Nama Lengkap Responden (Orang Tua / Wali)",
-        subtitle: "Cantumkan nama lengkap atau nama panggilan Anda (status: dapat diatur Wajib atau Opsional oleh Admin).",
-        type: "text",
-        required: true,
-        placeholder: "Contoh: Ibu Siti Rahmawati / Bapak Budi Santoso",
-      },
-      {
-        id: "q-ot-1",
-        title: "[CERIA] Seberapa sering Anda meluangkan waktu khusus untuk mengobrol santai dari hati ke hati dengan anak tanpa membahas tugas atau nilai sekolah?",
-        subtitle: "Menilai intensitas komunikasi dua arah dan kehadiran emosional di rumah.",
-        type: "single-choice",
-        required: true,
-        options: [
-          {
-            id: "opt-1",
-            title: "Hampir setiap hari secara rutin",
-            desc: "Mendengarkan cerita keseharian dan perasaan anak dengan penuh perhatian.",
-            iconName: "CalendarDays",
-          },
-          {
-            id: "opt-2",
-            title: "2-3 kali seminggu saat waktu senggang",
-            desc: "Menyisihkan waktu saat suasana rumah santai atau akhir pekan.",
-            iconName: "Layers",
-          },
-          {
-            id: "opt-3",
-            title: "Jarang, hanya bila ada masalah mendesak",
-            desc: "Komunikasi lebih banyak seputar kebutuhan materi, jadwal, atau aturan.",
-            iconName: "Compass",
-          },
-          {
-            id: "opt-4",
-            title: "Hampir tidak pernah karena kesibukan",
-            desc: "Merasa kesulitan menemukan waktu berkualitas berdua bersama anak.",
-            iconName: "Sparkles",
-          },
-        ],
-      },
-      {
-        id: "q-ot-2",
-        title: "[LENSA] Ketika anak melakukan kesalahan atau berbeda pendapat, bagaimana respon pertama yang biasanya Anda berikan?",
-        subtitle: "Menilai kemampuan memahami sudut pandang anak tanpa langsung menghakimi.",
-        type: "single-choice",
-        required: true,
-        options: [
-          {
-            id: "lensa-1",
-            title: "Mendengarkan alasannya terlebih dahulu dengan tenang",
-            desc: "Mencoba memahami dari kacamata anak sebelum memberi masukan.",
-            iconName: "Headphones",
-          },
-          {
-            id: "lensa-2",
-            title: "Langsung menasihati agar anak tidak mengulanginya",
-            desc: "Fokus pada solusi cepat menurut standar dan pengalaman orang tua.",
-            iconName: "Zap",
-          },
-          {
-            id: "lensa-3",
-            title: "Menegur dengan tegas dan memberi sanksi",
-            desc: "Mengutamakan kedisiplinan dan kepatuhan aturan keluarga.",
-            iconName: "ShieldCheck",
-          },
-          {
-            id: "lensa-4",
-            title: "Mendiamkan anak untuk beberapa saat",
-            desc: "Menghindari perdebatan terbuka hingga suasana emosi mereda.",
-            iconName: "Compass",
-          },
-        ],
-      },
-      {
-        id: "q-ot-3",
-        title: "[KOMPAK] Tantangan apa yang paling sering Anda hadapi saat berusaha membangun kedekatan emosional dengan anak di era digital?",
-        subtitle: "Anda dapat memilih lebih dari satu jawaban.",
-        type: "multiple-choice",
-        required: true,
-        options: [
-          {
-            id: "feat-1",
-            title: "Perbedaan Cara Pandang Antargenerasi (Beda Generasi)",
-            desc: "Sulit memahami tren, bahasa gaul, dan minat remaja masa kini.",
-            iconName: "Layers",
-          },
-          {
-            id: "feat-2",
-            title: "Keterikatan Anak pada Gadget & Media Sosial",
-            desc: "Anak lebih asyik di dunia online dibanding mengobrol bersama keluarga.",
-            iconName: "Smartphone",
-          },
-          {
-            id: "feat-3",
-            title: "Kelelahan Kerja & Keterbatasan Waktu",
-            desc: "Energi terkuras untuk bekerja dan memenuhi kebutuhan materi keluarga.",
-            iconName: "BarChart3",
-          },
-          {
-            id: "feat-4",
-            title: "Anak Cenderung Tertutup & Enggan Terbuka",
-            desc: "Anak merasa canggung atau takut dihakimi ketika mulai bercerita.",
-            iconName: "ShieldCheck",
-          },
-        ],
-      },
-      {
-        id: "q-ot-4",
-        title: "[HATI] Sejauh mana rumah saat ini sudah menjadi tempat yang aman (safe space) bagi anak untuk mencurahkan isi hatinya?",
-        subtitle: "Skala penilaian dari 1 (Belum Aman / Anak Sangat Tertutup) hingga 10 (Sangat Aman & Penuh Keterbukaan Kasih Sayang).",
-        type: "nps",
-        required: true,
-        minLabel: "1 — Belum Aman / Tertutup",
-        maxLabel: "10 — Safe Space Utama Keluarga",
-      },
-      {
-        id: "q-ot-5",
-        title: "Langkah atau komitmen apa yang ingin Anda mulai lakukan demi mempererat hubungan emosional dengan putra/putri Anda?",
-        subtitle: "Tuliskan refleksi Anda secara terbuka dan tulus untuk kehangatan keluarga.",
-        type: "text",
-        required: false,
-        placeholder: "Tuliskan komitmen atau harapan Anda untuk anak tercinta...",
-        suggestions: [
-          "Belajar lebih banyak mendengar tanpa langsung menghakimi",
-          "Meluangkan waktu 15 menit setiap malam untuk berbincang santai",
-          "Menghargai privasi dan sudut pandang generasi anak",
-          "Memeluk dan menyampaikan rasa bangga secara langsung",
-        ],
-      },
-    ],
+    questions: orangTuaQuestions,
   },
   {
-    id: "sublink-siswa",
-    slug: "siswa",
-    title: "Kuisioner Program GALAXY — Ruang Cerita & Emosional Anak",
+    id: "sublink-anak",
+    slug: "anak",
+    title: "Kuisioner Program GALAXY — Siswa & Remaja",
     targetAudience: "Siswa / Remaja",
     description:
       "Ruang berekspresi bagi anak untuk menyampaikan perasaan, rasa didengar di rumah, serta harapan terhadap kehadiran emosional orang tua. Tema: 'Beda Generasi, Satu Hati, Saling Memahami'.",
     isActive: true,
-    estimatedMinutes: 2,
+    estimatedMinutes: 3,
     totalResponses: 0,
     lastUpdated: "Hari ini",
-    questions: [
-      {
-        id: "q-sw-nama",
-        title: "Nama Lengkap Responden (Siswa / Remaja)",
-        subtitle: "Cantumkan nama lengkap atau nama panggilanmu (status: dapat diatur Wajib atau Opsional oleh Admin).",
-        type: "text",
-        required: true,
-        placeholder: "Contoh: Dimas Aditya / Salsa",
-      },
-      {
-        id: "q-sw-1",
-        title: "[CERIA] Apakah kamu merasa orang tua benar-benar mengenal hal-hal yang sedang kamu rasakan, sukai, atau khawatirkan saat ini?",
-        subtitle: "Pilih kondisi yang paling menggambarkan hubunganmu dengan orang tua di rumah.",
-        type: "single-choice",
-        required: true,
-        options: [
-          {
-            id: "sw-opt-1",
-            title: "Sangat mengenal, aku terbiasa cerita apa adanya",
-            desc: "Orang tua tahu teman-temanku, hobiku, dan hal yang membuatku cemas.",
-            iconName: "CalendarDays",
-          },
-          {
-            id: "sw-opt-2",
-            title: "Cukup tahu, tapi hanya hal-hal umum saja",
-            desc: "Tahu kegiatanku, tapi jarang membahas perasaan atau mimpi mendalam.",
-            iconName: "Layers",
-          },
-          {
-            id: "sw-opt-3",
-            title: "Kurang tahu, aku lebih nyaman memendam sendiri",
-            desc: "Merasa orang tua terlalu sibuk bekerja atau tidak akan mengerti.",
-            iconName: "Compass",
-          },
-          {
-            id: "sw-opt-4",
-            title: "Sama sekali tidak tahu, aku merasa asing di rumah",
-            desc: "Jarang diajak bicara santai selain urusan nilai sekolah dan aturan.",
-            iconName: "Sparkles",
-          },
-        ],
-      },
-      {
-        id: "q-sw-2",
-        title: "[LENSA] Ketika kamu menghadapi masalah berat atau masa sulit, ke mana tempat pertama yang kamu tuju untuk mencari dukungan?",
-        subtitle: "Pilih tempat bersandar yang paling sering kamu cari.",
-        type: "single-choice",
-        required: true,
-        options: [
-          {
-            id: "sw-lensa-1",
-            title: "Bercerita langsung ke orang tua di rumah",
-            desc: "Rumah adalah tempat paling aman dan nyaman untuk curhat bagiku.",
-            iconName: "ShieldCheck",
-          },
-          {
-            id: "sw-lensa-2",
-            title: "Teman sebaya atau komunitas di luar rumah",
-            desc: "Merasa teman lebih bisa mengerti dan tidak menghakimi rasaku.",
-            iconName: "Compass",
-          },
-          {
-            id: "sw-lensa-3",
-            title: "Melampiaskan di media sosial / game online",
-            desc: "Mencari distraksi dan pelarian agar tidak merasa sendirian.",
-            iconName: "Smartphone",
-          },
-          {
-            id: "sw-lensa-4",
-            title: "Menangis sendiri di kamar tanpa memberitahu siapa pun",
-            desc: "Takut jika cerita malah dimarahi, dibanding-bandingkan, atau disepelekan.",
-            iconName: "Headphones",
-          },
-        ],
-      },
-      {
-        id: "q-sw-3",
-        title: "[KOMPAK] Bentuk kehadiran orang tua seperti apa yang paling kamu butuhkan saat ini selain pemenuhan uang / kebutuhan materi?",
-        subtitle: "Kamu dapat memilih lebih dari satu jawaban yang paling kamu harapkan.",
-        type: "multiple-choice",
-        required: true,
-        options: [
-          {
-            id: "sw-feat-1",
-            title: "Didengarkan Ceritanya Tanpa Langsung Dinasihati",
-            desc: "Hanya butuh didengar dan divalidasi perasaannya tanpa dihakimi.",
-            iconName: "Headphones",
-          },
-          {
-            id: "sw-feat-2",
-            title: "Waktu Berkualitas Bersama untuk Jalan Santai / Ngobrol",
-            desc: "Momen seru dan bebas stres tanpa tuntutan target nilai.",
-            iconName: "Zap",
-          },
-          {
-            id: "sw-feat-3",
-            title: "Apresiasi & Ucapan Rasa Bangga atas Usahaku",
-            desc: "Bukan hanya dinilai saat berhasil, tapi dihargai setiap proses perjuanganku.",
-            iconName: "BarChart3",
-          },
-          {
-            id: "sw-feat-4",
-            title: "Diberikan Kepercayaan untuk Mengambil Keputusan",
-            desc: "Didukung mandiri dengan bimbingan yang ramah dan penuh kasih.",
-            iconName: "ShieldCheck",
-          },
-        ],
-      },
-      {
-        id: "q-sw-4",
-        title: "[HATI] Seberapa dekat dan nyamannya kamu secara emosional dengan orang tuamu saat berada di rumah?",
-        subtitle: "Skala 1 (Sangat Jauh / Terisolasi) hingga 10 (Sangat Dekat, Hangat, & Satu Hati).",
-        type: "nps",
-        required: true,
-        minLabel: "1 — Terasa Sangat Jauh & Asing",
-        maxLabel: "10 — Sangat Dekat, Hangat, & Satu Hati",
-      },
-      {
-        id: "q-sw-5",
-        title: "Jika ada satu hal yang ingin kamu sampaikan secara tulus dari lubuk hatimu kepada orang tua, apa yang ingin kamu katakan?",
-        subtitle: "Tuliskan perasaan, rasa terima kasih, atau harapanmu dengan bebas dan aman.",
-        type: "text",
-        required: false,
-        placeholder: "Tuliskan pesan hatimu untuk ayah / ibu di sini...",
-        suggestions: [
-          "Tolong luangkan waktu mengobrol denganku sebentar saja",
-          "Aku ingin ayah dan ibu bangga padaku apa adanya",
-          "Terima kasih sudah bekerja keras, aku sayang ayah dan ibu",
-          "Tolong jangan bandingkan aku dengan anak lain",
-        ],
-      },
-    ],
+    questions: anakQuestions,
   },
 ];
 
-const STORAGE_KEY = "galaksi_survey_sublinks_v4";
+// Helper functions for localStorage fallback
+const STORAGE_KEY = "galaxy_survey_sublinks_v1";
 
 export function getStoredSublinks(): SurveySublink[] {
-  if (typeof window === "undefined") return defaultSublinks;
+  if (typeof window === "undefined") {
+    return defaultSublinks;
+  }
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultSublinks));
+    return defaultSublinks;
+  }
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultSublinks));
-      return defaultSublinks;
-    }
     return JSON.parse(raw);
   } catch {
     return defaultSublinks;
@@ -347,14 +692,5 @@ export function getStoredSublinks(): SurveySublink[] {
 
 export function saveStoredSublinks(sublinks: SurveySublink[]): void {
   if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sublinks));
-  } catch (err) {
-    console.error("Failed to save sublinks to storage", err);
-  }
-}
-
-export function getSublinkBySlug(slug: string): SurveySublink | undefined {
-  const all = getStoredSublinks();
-  return all.find((item) => item.slug.toLowerCase() === slug.toLowerCase());
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sublinks));
 }

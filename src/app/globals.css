@@ -39,4 +39,66 @@ body {
   background: #7c3aed;
 }
 
+/* Print styles for official clean report */
+@media print {
+  @page {
+    size: auto;
+    margin: 12mm 12mm 12mm 12mm;
+  }
 
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Sembunyikan elemen web interaktif ketika dicetak */
+  .no-print,
+  [data-no-print="true"],
+  nav,
+  aside,
+  header:not(.print-header),
+  footer:not(.print-footer),
+  button,
+  input,
+  select,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Tampilkan dokumen laporan resmi khusus cetak */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Pastikan border dan warna latar belakang tercetak tajam dan presisi */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+  }
+
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr, .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
