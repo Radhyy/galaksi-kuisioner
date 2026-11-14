@@ -12,6 +12,7 @@ export interface SurveyResponseItem {
   sublinkTitle: string;
   targetAudience: string;
   submittedAt: string;
+  rawSubmittedAt?: string;
   rating: number; // 1 to 5
   sentiment: "Sangat Puas" | "Puas" | "Cukup" | "Kurang" | string;
   device: "Smartphone (Android)" | "iPhone (iOS)" | "Laptop (Windows)" | "MacBook (macOS)" | "Tablet (iPad)" | string;

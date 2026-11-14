@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import crypto from "crypto";
 
-export const dynamic = "force-dynamic";
 
 // Ensure survey_responses table exists
 async function ensureTable() {
@@ -33,7 +32,8 @@ export async function GET() {
         sublink_slug AS "sublinkSlug",
         sublink_title AS "sublinkTitle",
         target_audience AS "targetAudience",
-        TO_CHAR(submitted_at, 'DD Mon YYYY, HH24:MI') AS "submittedAt",
+        TO_CHAR(submitted_at AT TIME ZONE 'Asia/Jakarta', 'DD Mon YYYY, HH24:MI') AS "submittedAt",
+        submitted_at AS "rawSubmittedAt",
         rating::float AS rating,
         sentiment,
         device,

@@ -199,6 +199,11 @@ export default function AdminDashboardPage() {
   // Chart States
   const [trendRange, setTrendRange] = useState<"7d" | "30d">("7d");
   const [activePointIndex, setActivePointIndex] = useState<number | null>(6);
+  const [mountedTime, setMountedTime] = useState<number>(0);
+
+  useEffect(() => {
+    setMountedTime(Date.now());
+  }, []);
 
 
   // Modal States
@@ -708,35 +713,128 @@ export default function AdminDashboardPage() {
   const avgSatisfactionPercent =
     totalResponsesCount > 0 ? Math.round((avgRating / 5) * 100) : 0;
 
-  // Real 7-Day Trend Dynamic Calculation from Database Responses
+  // Helper to parse survey response submitted date
+  const parseResponseDate = (r: SurveyResponseItem): Date | null => {
+    if (r.rawSubmittedAt) {
+      const d = new Date(r.rawSubmittedAt);
+      if (!isNaN(d.getTime())) return d;
+    }
+    if (r.submittedAt) {
+      const months: Record<string, string> = {
+        jan: "Jan", feb: "Feb", mar: "Mar", apr: "Apr", mei: "May", may: "May",
+        jun: "Jun", jul: "Jul", agu: "Aug", aug: "Aug", sep: "Sep", okt: "Oct",
+        oct: "Oct", nop: "Nov", nov: "Nov", des: "Dec", dec: "Dec"
+      };
+      try {
+        const parts = r.submittedAt.split(/[\s,]+/);
+        if (parts.length >= 3) {
+          const day = parts[0];
+          const mKey = parts[1].toLowerCase().slice(0, 3);
+          const engMonth = months[mKey] || parts[1];
+          const year = parts[2];
+          const timePart = parts[3] || "00:00";
+          const d = new Date(`${engMonth} ${day}, ${year} ${timePart}:00`);
+          if (!isNaN(d.getTime())) return d;
+        }
+      } catch {
+        // fallback
+      }
+      const fallback = new Date(r.submittedAt);
+      if (!isNaN(fallback.getTime())) return fallback;
+    }
+    return null;
+  };
+
+  const getDayNameWIB = (d: Date): string => {
+    try {
+      const formatter = new Intl.DateTimeFormat("id-ID", {
+        timeZone: "Asia/Jakarta",
+        weekday: "short",
+      });
+      const shortDay = formatter.format(d).toLowerCase();
+      if (shortDay.startsWith("sen")) return "Sen";
+      if (shortDay.startsWith("sel")) return "Sel";
+      if (shortDay.startsWith("rab")) return "Rab";
+      if (shortDay.startsWith("kam")) return "Kam";
+      if (shortDay.startsWith("jum")) return "Jum";
+      if (shortDay.startsWith("sab")) return "Sab";
+      if (shortDay.startsWith("min")) return "Min";
+    } catch {
+      // fallback
+    }
+    const map = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    return map[d.getDay()] || "Sen";
+  };
+
+  // Real 7-Day & 30-Day Trend Dynamic Calculation from Database Responses
   const daysOfWeek = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
-  
-  // Real daily counts (today is Wednesday/Rab where current real responses were submitted)
-  const realDailyCounts = daysOfWeek.map((day) => {
-    if (day === "Rab") return responsesList.length;
-    return 0;
+  const trendLabels =
+    trendRange === "7d"
+      ? daysOfWeek
+      : ["Mg 1", "Mg 2", "Mg 3", "Mg 4", "Mg 5"];
+
+  const counts7d: Record<string, number> = {
+    Sen: 0,
+    Sel: 0,
+    Rab: 0,
+    Kam: 0,
+    Jum: 0,
+    Sab: 0,
+    Min: 0,
+  };
+
+  const counts30d = [0, 0, 0, 0, 0];
+
+  responsesList.forEach((r) => {
+    const d = parseResponseDate(r);
+    if (d) {
+      const dayName = getDayNameWIB(d);
+      counts7d[dayName] = (counts7d[dayName] || 0) + 1;
+
+      const diffDays = mountedTime > 0 ? Math.floor((mountedTime - d.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+      if (diffDays >= 0 && diffDays < 30) {
+        const weekIdx = Math.min(4, Math.floor(diffDays / 7));
+        counts30d[4 - weekIdx] = (counts30d[4 - weekIdx] || 0) + 1;
+      } else {
+        counts30d[4] = (counts30d[4] || 0) + 1;
+      }
+    }
   });
 
-  const maxDailyCount = Math.max(...realDailyCounts, 1);
+  const realTrendCounts =
+    trendRange === "7d"
+      ? daysOfWeek.map((day) => counts7d[day] || 0)
+      : counts30d;
 
-  const dailyPoints = daysOfWeek.map((day, idx) => {
-    const val = realDailyCounts[idx];
-    const x = 30 + idx * 80;
+  const maxDailyCount = Math.max(...realTrendCounts, 1);
+  const xStep = trendLabels.length > 1 ? 480 / (trendLabels.length - 1) : 80;
+
+  const dailyPoints = trendLabels.map((day, idx) => {
+    const val = realTrendCounts[idx];
+    const x = Math.round(30 + idx * xStep);
     const y = val > 0 ? Math.round(140 - (val / maxDailyCount) * 85) : 140;
     return { day, val, x, y };
   });
+
+  const highestValIndex = dailyPoints.reduce(
+    (maxI, pt, i, arr) => (pt.val > arr[maxI].val ? i : maxI),
+    0
+  );
 
   // Calculate dynamic SVG curve path for real data
   const trendLinePath = dailyPoints.reduce((acc, pt, i) => {
     if (i === 0) return `M ${pt.x},${pt.y}`;
     const prev = dailyPoints[i - 1];
-    const cpX1 = prev.x + 40;
+    const cpDist = Math.round(xStep / 2);
+    const cpX1 = prev.x + cpDist;
     const cpY1 = prev.y;
-    const cpX2 = pt.x - 40;
+    const cpX2 = pt.x - cpDist;
     const cpY2 = pt.y;
     return `${acc} C ${cpX1},${cpY1} ${cpX2},${cpY2} ${pt.x},${pt.y}`;
   }, "");
-  const trendAreaPath = `${trendLinePath} L 510,160 L 30,160 Z`;
+  const lastX = dailyPoints[dailyPoints.length - 1]?.x || 510;
+  const firstX = dailyPoints[0]?.x || 30;
+  const trendAreaPath = `${trendLinePath} L ${lastX},160 L ${firstX},160 Z`;
 
   // Real Parameter Satisfaction Index
   const satisfactionAspects = [
@@ -1638,6 +1736,7 @@ export default function AdminDashboardPage() {
                       viewBox="0 0 540 180"
                       className="w-full h-48 overflow-visible"
                       preserveAspectRatio="none"
+                      onMouseLeave={() => setActivePointIndex(null)}
                     >
                       <defs>
                         <linearGradient id="purpleAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -1709,7 +1808,7 @@ export default function AdminDashboardPage() {
 
                       {/* Interactive Data Points from Real Database */}
                       {dailyPoints.map((pt, i) => {
-                        const isHovered = activePointIndex === i || (activePointIndex === null && pt.val > 0);
+                        const isHovered = activePointIndex === i || (activePointIndex === null && i === highestValIndex && pt.val > 0);
                         return (
                           <g
                             key={i}

@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@/lib/db";
 import { defaultSublinks, SurveySublink } from "@/lib/surveyStore";
 
-export const dynamic = "force-dynamic";
 
 // Ensure survey_sublinks table exists and is seeded with defaults
 async function ensureSublinksTable() {

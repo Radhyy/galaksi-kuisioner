@@ -1,13 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { NextRequest, NextResponse, connection } from "next/server";
 import { sql } from "@/lib/db";
 
-export const dynamic = "force-dynamic";
-
-export async function GET(_request: NextRequest) {
+export async function GET(request: NextRequest) {
+  await connection();
   try {
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get("galaksi_session")?.value;
+    const sessionToken = request.cookies.get("galaksi_session")?.value;
 
     if (!sessionToken) {
       return NextResponse.json({ authenticated: false }, { status: 401 });
